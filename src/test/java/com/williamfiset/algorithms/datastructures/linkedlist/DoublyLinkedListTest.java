@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.*;
 
-public class LinkedListTest {
+public class DoublyLinkedListTest {
   private static final int LOOPS = 10000;
   private static final int TEST_SZ = 40;
   private static final int NUM_NULLS = TEST_SZ / 5;
@@ -36,14 +36,14 @@ public class LinkedListTest {
     list.removeLast();
   }
 
-  @Test(expected = Exception.class)
+  @Test
   public void testPeekFirstOfEmpty() {
-    list.peekFirst();
+    assertThat(list.peekFirst()).isNull();
   }
 
-  @Test(expected = Exception.class)
+  @Test
   public void testPeekLastOfEmpty() {
-    list.peekLast();
+    assertThat(list.peekLast()).isNull();
   }
 
   @Test
@@ -312,16 +312,16 @@ public class LinkedListTest {
   @Test
   public void testToString() {
     DoublyLinkedList<String> strs = new DoublyLinkedList<>();
-    assertThat(strs.toString()).isEqualTo("[  ]");
+    assertThat(strs.toString()).isEqualTo("[]");
     strs.add("a");
-    assertThat(strs.toString()).isEqualTo("[ a ]");
+    assertThat(strs.toString()).isEqualTo("[a]");
     strs.add("b");
-    assertThat(strs.toString()).isEqualTo("[ a, b ]");
+    assertThat(strs.toString()).isEqualTo("[a, b]");
     strs.add("c");
     strs.add("d");
     strs.add("e");
     strs.add("f");
-    assertThat(strs.toString()).isEqualTo("[ a, b, c, d, e, f ]");
+    assertThat(strs.toString()).isEqualTo("[a, b, c, d, e, f]");
   }
 
   // Generate a list of random numbers

@@ -38,10 +38,12 @@ public class SinglyLinkedListTest {
     list.removeLast();
   }
 
+  @Test
   public void testPeekFirstOfEmpty() {
     assertThat(list.peekFirst()).isNull();
   }
 
+  @Test
   public void testPeekLastOfEmpty() {
     assertThat(list.peekLast()).isNull();
   }
