@@ -5,70 +5,71 @@
  *
  * <p>$ ./gradlew run -Palgorithm=sorting.Heapsort
  *
- * @author William Fiset, william.alexandre.fiset@gmail.com
+ * @author Heydar Rzayev, rzaaeeff@gmail.com
  */
 package com.williamfiset.algorithms.sorting;
 
-import java.util.*;
-
 public class Heapsort implements InplaceSort {
 
-  @Override
-  public void sort(int[] values) {
-    Heapsort.heapsort(values);
-  }
-
-  private static void heapsort(int[] ar) {
-    if (ar == null) return;
-    int n = ar.length;
-
-    // Heapify, converts array into binary heap O(n), see:
-    // http://www.cs.umd.edu/~meesh/351/mount/lectures/lect14-heapsort-analysis-part.pdf
-    for (int i = Math.max(0, (n / 2) - 1); i >= 0; i--) {
-      sink(ar, n, i);
+    @Override
+    public void sort(int[] values) {
+        Heapsort.heapsort(values);
     }
 
-    // Sorting bit
-    for (int i = n - 1; i >= 0; i--) {
-      swap(ar, 0, i);
-      sink(ar, i, 0);
+    private static void heapsort(int[] ar) {
+        int size = ar.length;
+        if (size <= 1) return;
+
+        // heapify
+        // sink each element starting from the level before last level
+        for (int i = Math.max(0, (size - 1) / 2); i >= 0; i--) {
+            sink(ar, i, size);
+        }
+
+        // get max from root
+        // replace it with last
+        // then sink new root
+        for (int i = size - 1; i > 0; i--) {
+            swap(ar, i, 0);
+            sink(ar, 0, i);
+        }
     }
-  }
 
-  private static void sink(int[] ar, int n, int i) {
-    while (true) {
-      int left = 2 * i + 1; // Left  node
-      int right = 2 * i + 2; // Right node
-      int largest = i;
+    // if element is less than any of its descendants,
+    // replace with a greater one of them
+    //      (4)                  (9)
+    //      / \        ->        / \
+    //    (6) (9)              (6) (4)
+    private static void sink(int[] ar, int index, int size) {
+        while (true) {
+            int left = 2 * index + 1;
+            int right = 2 * (index + 1);
+            int largest = index;
 
-      // Right child is larger than parent
-      if (right < n && ar[right] > ar[largest]) largest = right;
+            if (left < size && ar[left] > ar[largest]) largest = left;
+            if (right < size && ar[right] > ar[largest]) largest = right;
 
-      // Left child is larger than parent
-      if (left < n && ar[left] > ar[largest]) largest = left;
+            if (largest == index) break;
 
-      // Move down the tree following the largest node
-      if (largest != i) {
-        swap(ar, largest, i);
-        i = largest;
-      } else break;
+            swap(ar, index, largest);
+            sink(ar, largest, size);
+        }
     }
-  }
 
-  private static void swap(int[] ar, int i, int j) {
-    int tmp = ar[i];
-    ar[i] = ar[j];
-    ar[j] = tmp;
-  }
+    private static void swap(int[] ar, int i, int j) {
+        int tmp = ar[i];
+        ar[i] = ar[j];
+        ar[j] = tmp;
+    }
 
-  /* TESTING */
+    /* TESTING */
 
-  public static void main(String[] args) {
-    Heapsort sorter = new Heapsort();
-    int[] array = {10, 4, 6, 4, 8, -13, 2, 3};
-    sorter.sort(array);
-    // Prints:
-    // [-13, 2, 3, 4, 4, 6, 8, 10]
-    System.out.println(java.util.Arrays.toString(array));
-  }
+    public static void main(String[] args) {
+        Heapsort sorter = new Heapsort();
+        int[] array = {10, 4, 6, 4, 8, -13, 2, 3};
+        sorter.sort(array);
+        // Prints:
+        // [-13, 2, 3, 4, 4, 6, 8, 10]
+        System.out.println(java.util.Arrays.toString(array));
+    }
 }
